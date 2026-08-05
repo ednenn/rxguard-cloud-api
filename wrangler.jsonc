@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rxguard-cloud-api",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-08-05",
+  "kv_namespaces": [
+    {
+      "binding": "RXGUARD_DATA",
+      "id": "KV_NAMESPACE_ID_BURAYA"
+    }
+  ]
+}
