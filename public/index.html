@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RxGuard AI Unified</title>
+<style>
+:root{--navy:#123b57;--blue:#1768ad;--green:#118357;--purple:#6b35c8;--red:#a52c36;--bg:#eef3f6;--line:#c7d4dc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:#18384b}
+header{background:linear-gradient(135deg,#0f3e5c,#177b79);color:white;padding:16px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:24px;margin:0}.grow{flex:1}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button{border:0;border-radius:9px;padding:11px 14px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff}.green{background:var(--green);color:#fff}.purple{background:var(--purple);color:#fff}.ghost{background:#fff;color:var(--navy)}.red{background:var(--red);color:#fff}
+main{max-width:1220px;margin:auto;padding:18px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 5px 18px #24485c12}
+.hidden{display:none!important}.auth{max-width:520px;margin:45px auto}.auth input,.field input,.field select,.drugSearch{width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;font:inherit}
+.tabs{display:flex;gap:8px;margin:10px 0}.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.mode{padding:22px 14px;min-height:130px;text-align:left;background:#fff;border:2px solid #d3dde3;border-radius:16px}.mode b{font-size:22px;display:block;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:#526b7b}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;min-width:1000px}th,td{border:1px solid #cbd7de;padding:7px;text-align:left;vertical-align:top}th{background:#edf4f7}td input{width:100%;border:0;padding:6px}.tableWrap{overflow:auto}.status.ok{background:#dff5e8;color:#08743d}.status.bad{background:#ffdfe0;color:#9f1c25}.status.warn{background:#fff3c4;color:#795d00}
+#modeTitle{margin:0 0 12px}.infoBox{white-space:pre-wrap;background:#f4f8fa;padding:14px;border-radius:12px;min-height:90px}
+@media(max-width:800px){.modes{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr 1fr}main{padding:10px}header{padding:12px}.hideMobile{display:none}}
+@media(max-width:480px){.modes,.grid{grid-template-columns:1fr}.mode{min-height:105px}}
+</style>
+</head>
+<body>
+<header><h1>RxGuard AI</h1><span id="server">Sunucu kontrol ediliyor…</span><span class="grow"></span><div class="toolbar"><button id="modeBack" class="ghost hidden">MODLAR</button><button id="logout" class="red hidden">ÇIKIŞ</button></div></header>
+<main>
+<section id="authView" class="card auth">
+  <h2>RxGuard AI Giriş</h2>
+  <div class="tabs"><button id="loginTab" class="primary">Giriş</button><button id="registerTab">Yeni Üye</button></div>
+  <div id="nameRow" class="field hidden"><label>Ad Soyad</label><input id="name" autocomplete="name"></div>
+  <div class="field"><label>E-posta</label><input id="email" type="email" autocomplete="email"></div>
+  <div class="field"><label>Şifre</label><input id="password" type="password" autocomplete="current-password"></div>
+  <button id="authGo" class="green" style="width:100%;margin-top:12px">GİRİŞ YAP</button>
+  <div id="authMsg" style="margin-top:10px"></div>
+</section>
+
+<section id="modeView" class="hidden">
+  <div class="card"><h2>Kullanım Modunu Seç</h2><p>Tek hesabınla istediğin bölüme girebilirsin.</p>
+    <div class="modes">
+      <button class="mode" data-mode="eczaci"><b>💊 Eczacı</b>Reçete, rapor, SUT ve kural kontrolü</button>
+      <button class="mode" data-mode="saglikci"><b>🩺 Sağlıkçı</b>Klinik ve mesleki ilaç bilgisi</button>
+      <button class="mode" data-mode="ogrenci"><b>🎓 Öğrenci</b>Ders ve farmakoloji odaklı bilgi</button>
+      <button class="mode" data-mode="hasta"><b>👤 Hasta</b>Kısa ve anlaşılır ilaç bilgisi</button>
+    </div>
+  </div>
+</section>
+
+<section id="appView" class="hidden">
+  <div class="card"><h2 id="modeTitle"></h2><div id="modeDesc"></div></div>
+
+  <div id="eczaciView" class="hidden">
+    <div class="card">
+      <div class="actions">
+        <button id="docUploadBtn" class="primary">📄 BELGE AKTAR</button>
+        <input id="docInput" type="file" accept="image/*" multiple class="hidden">
+        <button id="newRx" class="ghost">YENİ REÇETE</button>
+        <button id="checkBtn" class="green">✓ REÇETEYİ KONTROL ET</button>
+      </div>
+      <div id="scanInfo">Masaüstünde reçete/rapor görsellerini seçebilir, Android uygulamada native belge tarayıcıyı kullanabilirsin.</div>
+    </div>
+    <div class="card">
+      <h3>Reçete / Hasta Bilgileri</h3>
+      <div class="grid">
+        <div class="field"><label>Reçete No</label><input id="prescriptionNo"></div>
+        <div class="field"><label>Reçete Tarihi</label><input id="date"></div>
+        <div class="field"><label>Hasta Adı Soyadı</label><input id="patientName"></div>
+        <div class="field"><label>Cinsiyet</label><input id="patientGender"></div>
+        <div class="field"><label>Yaş</label><input id="patientAge"></div>
+        <div class="field"><label>Hastane / Tesis</label><input id="hospital"></div>
+        <div class="field"><label>Doktor Adı Soyadı</label><input id="doctorName"></div>
+        <div class="field"><label>Doktor Branşı</label><input id="doctorBranch"></div>
+        <div class="field"><label>ICD Kodları</label><input id="icd"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>İlaçlar</h3>
+      <div class="tableWrap"><table><thead><tr><th>İlaç</th><th>Barkod</th><th>Etken Madde</th><th>Kutu</th><th>Kullanım</th><th>Rapor Dozu</th><th>Kontrol Sonucu</th></tr></thead><tbody id="rows"></tbody></table></div>
+      <button id="addRow" class="ghost" style="margin-top:10px">+ İlaç Satırı</button>
+    </div>
+    <div class="card"><h3>Kontrol Sonucu</h3><div id="summary">Henüz kontrol yapılmadı.</div></div>
+  </div>
+
+  <div id="infoModeView" class="hidden">
+    <div class="card">
+      <h3>İlaç Bilgisi</h3>
+      <input id="drugQuery" class="drugSearch" placeholder="İlaç adı, barkod veya etken madde">
+      <button id="drugSearchBtn" class="primary" style="margin-top:8px">BİLGİYİ GETİR</button>
+      <div id="drugInfo" class="infoBox" style="margin-top:12px">Bu kullanım kolunun ayrıntılı tasarımı sonraki sürümlerde aynı ortak kaynaktan geliştirilecek.</div>
+    </div>
+  </div>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let registerMode=false,currentMode='',reports=[],drugs=[];
+const blankDrug=x=>({name:'',barcode:'',activeIngredient:'',boxCount:'',usage:'',reportDose:'',status:'',reason:'',...(x||{})});
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+async function api(p,o={}){const r=await fetch(p,{credentials:'include',...o,headers:{'content-type':'application/json',...(o.headers||{})}}),t=await r.text();let d={};try{d=JSON.parse(t)}catch{}if(!r.ok)throw new Error(d.error||t||('HTTP '+r.status));return d}
+function show(id){['authView','modeView','appView'].forEach(x=>$(x).classList.add('hidden'));$(id).classList.remove('hidden')}
+function authToggle(reg){registerMode=reg;$('nameRow').classList.toggle('hidden',!reg);$('authGo').textContent=reg?'KAYIT OL':'GİRİŞ YAP';$('loginTab').className=reg?'':'primary';$('registerTab').className=reg?'primary':''}
+$('loginTab').onclick=()=>authToggle(false);$('registerTab').onclick=()=>authToggle(true);
+$('authGo').onclick=async()=>{try{const p=registerMode?'/api/auth/register':'/api/auth/login';await api(p,{method:'POST',body:JSON.stringify({name:$('name').value,email:$('email').value,password:$('password').value})});enterModes()}catch(e){$('authMsg').textContent='HATA: '+e.message}}
+function enterModes(){show('modeView');$('logout').classList.remove('hidden');$('modeBack').classList.add('hidden')}
+$('logout').onclick=async()=>{try{await api('/api/auth/logout',{method:'POST',body:'{}'})}catch{}show('authView');$('logout').classList.add('hidden');$('modeBack').classList.add('hidden')}
+$('modeBack').onclick=enterModes;
+document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>enterMode(b.dataset.mode));
+function enterMode(m){currentMode=m;show('appView');$('modeBack').classList.remove('hidden');$('eczaciView').classList.toggle('hidden',m!=='eczaci');$('infoModeView').classList.toggle('hidden',m==='eczaci');
+ const map={eczaci:['💊 Eczacı','Reçete, rapor, SUT ve kişisel kuralların ayrıntılı kontrolü.'],saglikci:['🩺 Sağlıkçı','Aynı ortak ilaç verisini klinik/mesleki anlatımla sunar.'],ogrenci:['🎓 Öğrenci','Aynı ortak kaynaktan ders ve farmakoloji odaklı anlatım.'],hasta:['👤 Hasta','Aynı ortak kaynaktan kısa ve anlaşılır ilaç bilgisi.']};$('modeTitle').textContent=map[m][0];$('modeDesc').textContent=map[m][1]}
+function renderRows(){if(!drugs.length)drugs=[blankDrug()];$('rows').innerHTML=drugs.map((d,i)=>`<tr data-i="${i}"><td><input data-k="name" value="${esc(d.name)}"></td><td><input data-k="barcode" value="${esc(d.barcode)}"></td><td><input data-k="activeIngredient" value="${esc(d.activeIngredient)}"></td><td><input data-k="boxCount" value="${esc(d.boxCount)}"></td><td><input data-k="usage" value="${esc(d.usage)}"></td><td><input data-k="reportDose" value="${esc(d.reportDose)}"></td><td class="status ${d.status==='UYGUN'?'ok':d.status==='KESINTI'?'bad':d.status==='DOKTOR_TEYIDI'?'warn':''}"><b>${d.status==='UYGUN'?'TAMAMDIR':d.status==='KESINTI'?'ÖDENMİYOR':d.status==='DOKTOR_TEYIDI'?'DOKTOR TEYİDİ':d.status||'—'}</b>${d.reason?'<br>'+esc(d.reason):''}</td></tr>`).join('');$('rows').querySelectorAll('input').forEach(x=>x.oninput=e=>drugs[+e.target.closest('tr').dataset.i][e.target.dataset.k]=e.target.value)}
+$('addRow').onclick=()=>{drugs.push(blankDrug());renderRows()};
+$('newRx').onclick=()=>{['prescriptionNo','date','patientName','patientGender','patientAge','hospital','doctorName','doctorBranch','icd'].forEach(x=>$(x).value='');reports=[];drugs=[blankDrug()];renderRows();$('summary').textContent='Yeni reçete hazır.'}
+function getRx(){return {prescriptionNo:$('prescriptionNo').value,date:$('date').value,patientName:$('patientName').value,patientGender:$('patientGender').value,patientAge:$('patientAge').value,hospital:$('hospital').value,doctorName:$('doctorName').value,doctorBranch:$('doctorBranch').value,icd:$('icd').value.split(',').map(x=>({code:x.trim()})).filter(x=>x.code),drugs:drugs.map(({status,reason,...x})=>x)}}
+$('checkBtn').onclick=async()=>{try{$('summary').textContent='Kontrol ediliyor…';const d=await api('/api/prescription/check',{method:'POST',body:JSON.stringify({prescription:getRx(),reports})});const rs=d.check?.results||[];drugs=drugs.map((x,i)=>({...x,status:rs[i]?.status||'INCELEME',reason:rs[i]?.reason||''}));renderRows();$('summary').textContent='REÇETE SONUCU: '+(d.check?.overall||'INCELEME')}catch(e){$('summary').textContent='HATA: '+e.message}}
+$('docUploadBtn').onclick=()=>$('docInput').click();
+$('docInput').onchange=async e=>{const files=[...e.target.files].filter(f=>f.type.startsWith('image/'));if(!files.length)return;$('scanInfo').textContent='Belgeler okunuyor…';const images=await Promise.all(files.map(f=>new Promise((res,rej)=>{const r=new FileReader;r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)})));try{const d=await api('/api/mobile/analyze',{method:'POST',body:JSON.stringify({images})});const pr=d.prescriptions?.[0];reports=d.reports||[];if(pr){for(const k of ['prescriptionNo','date','patientName','patientGender','patientAge','hospital','doctorName','doctorBranch'])if(pr[k]!=null)$(k).value=pr[k];$('icd').value=(pr.icd||[]).map(x=>x.code||x).join(', ');drugs=(pr.drugs||[]).map(blankDrug);renderRows();$('scanInfo').textContent=`Aktarım tamamlandı: ${d.prescriptions.length} reçete, ${reports.length} rapor.`}else $('scanInfo').textContent='Reçete algılanamadı.'}catch(e){$('scanInfo').textContent='HATA: '+e.message}}
+$('drugSearchBtn').onclick=async()=>{try{const d=await api('/api/drug/info?q='+encodeURIComponent($('drugQuery').value));if(!d.results.length){$('drugInfo').textContent='Kayıt bulunamadı. Ortak ilaç veritabanı daha sonra doldurulacak.';return}const x=d.results[0];const prefix=currentMode==='hasta'?'Kısa anlatım: ':currentMode==='ogrenci'?'Ders anlatımı: ':currentMode==='saglikci'?'Klinik bilgi: ':'';$('drugInfo').textContent=prefix+JSON.stringify(x,null,2)}catch(e){$('drugInfo').textContent='HATA: '+e.message}}
+fetch('/api/health').then(r=>r.json()).then(d=>$('server').textContent=d.ok?'Sunucu aktif • API '+d.version:'Sunucu hatası').catch(()=>$('server').textContent='Bağlantı yok');
+api('/api/auth/me').then(()=>enterModes()).catch(()=>show('authView'));renderRows();
+</script>
+</body></html>

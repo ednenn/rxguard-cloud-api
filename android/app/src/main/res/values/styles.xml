@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.RxGuard" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="colorPrimary">#164C70</item>
+        <item name="colorPrimaryVariant">#123B57</item>
+        <item name="colorSecondary">#16875A</item>
+        <item name="android:navigationBarColor">#FFFFFF</item>
+        <item name="android:statusBarColor">#164C70</item>
+    </style>
+</resources>

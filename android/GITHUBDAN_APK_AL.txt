@@ -1,0 +1,10 @@
+ANDROID STUDIO KURMADAN APK ALMA:
+
+1) GitHub'da yeni bir depo oluştur (ör: RxGuard-Android).
+2) Bu ZIP'in içindeki TÜM dosyaları depoya yükle.
+3) GitHub > Actions > "Build RxGuard Android APK".
+4) "Run workflow" de.
+5) Build bitince sayfanın altındaki "RxGuard-AI-Android-APK" dosyasını indir.
+6) İçindeki app-debug.apk gerçek Android uygulamasıdır.
+
+Bu yöntem bilgisayarına Android Studio kurmadan APK üretir.

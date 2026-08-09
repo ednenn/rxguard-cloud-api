@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootScroll" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fillViewport="true" android:background="#F3F6F8">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="14dp">
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="RxGuard AI" android:textStyle="bold" android:textSize="25sp" android:textColor="#123B57"/>
+        <TextView android:id="@+id/serverState" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Sunucu kontrol ediliyor..." android:textColor="#4D6675" android:paddingBottom="10dp"/>
+
+        <LinearLayout android:id="@+id/authBox" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Giriş / Yeni Üye"
+                android:textStyle="bold" android:textSize="20sp" android:textColor="#123B57"/>
+            <EditText android:id="@+id/loginName" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Ad Soyad (kayıtta)"/>
+            <EditText android:id="@+id/loginEmail" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="E-posta" android:inputType="textEmailAddress"/>
+            <EditText android:id="@+id/loginPassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Şifre" android:inputType="textPassword"/>
+            <Button android:id="@+id/loginButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="GİRİŞ YAP"/>
+            <Button android:id="@+id/registerButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="YENİ ÜYE OL"/>
+            <TextView android:id="@+id/authState" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/modeBox" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Kullanım Modunu Seç"
+                android:textStyle="bold" android:textSize="20sp" android:textColor="#123B57"/>
+            <Button android:id="@+id/modePharmacist" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="💊 ECZACI"/>
+            <Button android:id="@+id/modeHealth" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="🩺 SAĞLIKÇI"/>
+            <Button android:id="@+id/modeStudent" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="🎓 ÖĞRENCİ"/>
+            <Button android:id="@+id/modePatient" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="👤 HASTA"/>
+            <Button android:id="@+id/logoutButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="ÇIKIŞ"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/appBox" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <Button android:id="@+id/backModes" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="← MODLARA DÖN"/>
+            <TextView android:id="@+id/modeTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textStyle="bold" android:textSize="21sp" android:textColor="#123B57" android:padding="8dp"/>
+
+            <LinearLayout android:id="@+id/pharmacistBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                <Button android:id="@+id/scanButton" android:layout_width="match_parent" android:layout_height="58dp"
+                    android:text="📷 BELGELERİ TARA" android:textStyle="bold"/>
+                <TextView android:id="@+id/scanState" android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Reçete ve raporları aynı tarama oturumunda tara." android:padding="10dp" android:textColor="#315267"/>
+                <Button android:id="@+id/checkButton" android:layout_width="match_parent" android:layout_height="56dp"
+                    android:text="✓ REÇETEYİ KONTROL ET" android:textStyle="bold"/>
+                <Button android:id="@+id/manualButton" android:layout_width="match_parent" android:layout_height="48dp" android:text="MANUEL DÜZENLE"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Reçete / Hasta Bilgileri"
+                    android:textStyle="bold" android:textSize="18sp" android:textColor="#123B57"/>
+                <EditText android:id="@+id/rxNo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Reçete No" android:enabled="false"/>
+                <EditText android:id="@+id/rxDate" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Reçete Tarihi" android:enabled="false"/>
+                <EditText android:id="@+id/patientName" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Hasta Adı Soyadı" android:enabled="false"/>
+                <EditText android:id="@+id/genderAge" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Cinsiyet / Yaş" android:enabled="false"/>
+                <EditText android:id="@+id/hospital" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Hastane / Tesis" android:enabled="false"/>
+                <EditText android:id="@+id/doctorName" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Doktor Adı Soyadı" android:enabled="false"/>
+                <EditText android:id="@+id/doctorBranch" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Doktor Branşı" android:enabled="false"/>
+                <EditText android:id="@+id/icd" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="ICD Kodları" android:enabled="false"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="İlaçlar"
+                    android:textStyle="bold" android:textSize="18sp" android:textColor="#123B57" android:paddingTop="14dp"/>
+                <LinearLayout android:id="@+id/drugRows" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/>
+                <TextView android:id="@+id/resultSummary" android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Henüz kontrol yapılmadı." android:textStyle="bold" android:textSize="17sp" android:textColor="#123B57" android:paddingTop="16dp"/>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/infoBox" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                <EditText android:id="@+id/drugQuery" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="İlaç adı, barkod veya etken madde"/>
+                <Button android:id="@+id/drugInfoButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="BİLGİYİ GETİR"/>
+                <TextView android:id="@+id/drugInfo" android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Bu modun ayrıntılı tasarımı ortak veri kaynağından geliştirilecek." android:padding="12dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

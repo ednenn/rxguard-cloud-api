@@ -1,0 +1,8 @@
+{
+  "name": "RxGuard AI Unified",
+  "short_name": "RxGuard",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eef3f6",
+  "theme_color": "#123b57"
+}
